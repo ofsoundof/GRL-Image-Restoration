@@ -91,7 +91,7 @@ If this work is helpful for your research, please consider citing the following 
 @inproceedings{li2023grl,
   title={Efficient and Explicit Modelling of Image Hierarchies for Image Restoration},
   author={Yawei Li, Yuchen Fan, Xiaoyu Xiang, Denis Demandolx, Rakesh Ranjan, Radu Timofte, and Luc Van Gool},
-   booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
   year={2023}
 }
 ```

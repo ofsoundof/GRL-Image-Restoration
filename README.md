@@ -1,4 +1,4 @@
-# GRL
+# GRL for Image Restoration
 
 This repository is an official implementation of the paper Efficient and Explicit Modelling of Image Hierarchies for Image Restoration.
 
@@ -44,43 +44,43 @@ synthetic settings. The proposed method sets the new state-of-the-art for severa
 <details>
 <summary><strong>Image denoising</strong> (click to expand) </summary>
 
-<img src = "./figs/task3.png"> 
+<img src = "./figs/task3.png" width=2000> 
 </details>
 
 <details>
 <summary><strong>Image SR</strong> (click to expand) </summary>
 
-<img src = "./figs/task4.png"> 
+<img src = "./figs/task4.png" width=2000> 
 </details>
 
 <details>
 <summary><strong>Single-Image Motion Deblur</strong> (click to expand) </summary>
 
-<img src = "./figs/task1.png"> 
+<img src = "./figs/task1.png" width=1000> 
 </details>
 
 <details>
 <summary><strong>Defocus Deblur</strong> (click to expand) </summary>
 
-<img src = "./figs/task2.png"> 
+<img src = "./figs/task2.png" width=2000> 
 </details>
 
 <details>
 <summary><strong>JPEG Compression Artifact Removal</strong> (click to expand) </summary>
 
-<img src = "./figs/task5.png"> 
+<img src = "./figs/task5.png" width=2000> 
 </details>
 
 <details>
 <summary><strong>Image Demosaicking</strong> (click to expand) </summary>
 
-<img src = "./figs/task6.png"> 
+<img src = "./figs/task6.png" width=1000> 
 </details>
 
 <details>
 <summary><strong>Real-World Image SR</strong> (click to expand) </summary>
 
-<img src = "./figs/task7.png"> 
+<img src = "./figs/task7.png" width=1000> 
 </details>
 
 ## Citation

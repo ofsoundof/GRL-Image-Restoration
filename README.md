@@ -36,7 +36,7 @@ synthetic settings. The proposed method sets the new state-of-the-art for severa
 ## Main Results
 
 <div align=center>
-<img src='./figs/grl_teaser.png' width=2000>
+<img src='./figs/grl_teaser_results.png' width=2000>
 </div>
 
 

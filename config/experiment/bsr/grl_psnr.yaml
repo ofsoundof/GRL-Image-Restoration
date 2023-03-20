@@ -1,0 +1,65 @@
+# @package _global_
+tag: GRL/GRL_bsr/${model.name}_${data_module.train.dataset}_w${model.window_size}e${model.embed_dim}m${model.mlp_ratio}_b16p${patch_size}c${data_module.num_channels}x${data_module.scale}
+
+gpus: 8
+num_nodes: 1
+patch_size: 128
+batch_size: 4
+
+stripe_size1: 64
+stripe_size2: 64
+
+training: True
+mixup: False
+
+defaults:
+  - override /data_module: bsr
+  - override /engine: base_psnr
+  - override /model: grl_base
+  - override /loss: l1
+  - override /lr_scheduler: multi_steplr
+  - override /optimizer: adam
+  - override /metric: restorer
+
+data_module:
+  scale: 4
+  train:
+    dataset: all
+    use_usm_pixel: True
+    use_usm_percep: False
+    use_usm_gan: False
+  val:
+    dataset: set5
+    use_usm: True
+
+model:
+  upscale: ${data_module.scale}
+  in_channels: ${data_module.num_channels}
+  upsampler: nearest+conv
+  window_size: 16
+  stripe_size:
+    - ${stripe_size1}
+    - ${stripe_size2}
+  stripe_groups:
+    - null
+    - null
+  anchor_window_down_factor: 4
+  fairscale_checkpoint: True
+
+trainer:
+  max_steps: 1000000
+  val_check_interval: 5000
+
+lr_scheduler:
+  # milestones: [100, 200, 300, 400]
+  milestones: [500000, 800000, 900000, 950000]
+  # milestones: [250000, 400000, 450000, 475000]
+  gamma: 0.5
+
+optimizer:
+  lr: 0.0002
+
+fbl_resource_requirements:
+  memory_per_gpu: 30000
+  capabilities:
+    - null

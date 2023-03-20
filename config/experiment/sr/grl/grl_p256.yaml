@@ -1,0 +1,57 @@
+# @package _global_
+tag: GRL/GRL_${data_module.name}/${model.name}/ft_${data_module.name}_${model.name}_${data_module.train.dataset}_w${model.window_size}d${model.anchor_window_down_factor}e${model.embed_dim}m${model.mlp_ratio}_p${patch_size}c${data_module.num_channels}x${data_module.scale}
+
+gpus: 8
+num_nodes: 1
+patch_size: 256
+batch_size: 1
+tile: 640
+tile_overlap: 32
+
+stripe_size1: 64
+stripe_size2: 64
+
+training: True
+mixup: False
+
+defaults:
+  - override /data_module: sr
+  - override /model: grl/grl_tiny
+  - override /loss: l1
+  - override /lr_scheduler: multi_steplr
+  - override /optimizer: adamw
+  - override /metric: restorer
+
+data_module:
+  scale: 4
+  train:
+    dataset: df2k
+    # load_lr: False
+
+model:
+  upscale: ${data_module.scale}
+  in_channels: ${data_module.num_channels}
+  window_size: 32
+  stripe_size:
+    - ${stripe_size1}
+    - ${stripe_size2}
+  stripe_groups:
+    - null
+    - null
+  anchor_window_down_factor: 4
+
+trainer:
+  max_steps: 225000
+  val_check_interval: 5000
+
+lr_scheduler:
+  milestones: [100000, 150000, 175000, 200000]
+  gamma: 0.5
+
+optimizer:
+  lr: 0.0001
+
+fbl_resource_requirements:
+  memory_per_gpu: 30000
+  # capabilities:
+  #   - null

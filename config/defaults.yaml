@@ -1,0 +1,83 @@
+tag: dnformer # experiment identifier, required argument
+
+gpus: 2
+num_nodes: 1
+patch_size: 128
+batch_size: 1
+num_workers: 2
+batch_sizes: []
+patch_sizes: []
+steps: []
+
+seed: 1234
+
+mixup: True
+save_images: True
+save_gt: False
+
+running_mode: normal
+resume: True
+pretrained_checkpoint: null
+load_state_dict: False
+training: True
+print_model: True
+find_unused_parameters: False # This is set to True by default in PyTorch-Lightning
+tile: 0
+tile_overlap: 0
+
+model_checkpoint:
+  save_last: True
+  save_top_k: 1
+  monitor: "val_psnr"
+  mode: "max"
+
+callbacks:
+  lr_monitor:
+    _target_: 'pytorch_lightning.callbacks.LearningRateMonitor'
+    logging_interval: step
+  progress_bar:
+    _target_: 'pytorch_lightning.callbacks.TQDMProgressBar'
+    refresh_rate: 10
+
+io:
+  base_output_path: "~/projects/data/LightningIR/experiments"
+  version: 0
+
+trainer:
+  num_nodes: ${num_nodes}
+  gpus: ${gpus}
+  strategy: ddp
+  max_epochs: null
+  max_steps: 500000
+  benchmark: True
+  log_every_n_steps: 50
+  check_val_every_n_epoch:  1
+  val_check_interval: null # controls whether to use epoch-based or step-based training
+  num_sanity_val_steps: 0
+  move_metrics_to_cpu: False
+  resume_from_checkpoint: null
+  flush_logs_every_n_steps: ${trainer.log_every_n_steps} # slow due to manifold writing
+
+defaults:
+  - _self_
+  - data_module: sidd_srgb
+  - engine: base
+  - model: uformer
+  - loss: charbonnier
+  - lr_scheduler: warmup
+  - optimizer: adamw
+  - metric: restorer
+  - launch_mode: null
+  - experiment: null
+
+fbl_resource_requirements:
+  _target_: on_device_ai.cvg.denoising.dnformer.workflow.get_fbl_resource_requirements
+  cpus_per_gpu: 5 # https://www.internalfb.com/intern/wiki/Facebook_Server_SKUs/
+  gpus_per_node: ${gpus}
+  memory_per_gpu: 30000
+  region: null
+  percent_cpu: null
+  capabilities:
+    - GPU_V100_32G_HOST
+# default_vll_gpu
+# default_prn_gpu

@@ -1,0 +1,7 @@
+# @package _global_
+lr_scheduler:
+  _target_: optim.warmup_scheduler
+  num_epochs: ${trainer.max_steps}
+  warmup_epochs: 20000
+  eta_min: 1e-6
+  multiplier: 1

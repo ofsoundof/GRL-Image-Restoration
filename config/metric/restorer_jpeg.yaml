@@ -1,0 +1,28 @@
+# @package _global_
+
+metric:
+  train_psnr:
+    _target_: torchmetrics.PeakSignalNoiseRatio
+    data_range: 1.0
+
+  val_psnr:
+    _target_: utils.metrics.psnr.PeakSignalNoiseRatio
+    data_range: 1.0
+  val_psnr_y:
+    _target_: utils.metrics.psnr.PeakSignalNoiseRatio
+    data_range: 1.0
+    channel: "y"
+  val_ssim:
+    _target_: utils.metrics.ssim.StructuralSimilarityIndexMeasure
+    data_range: 1.0
+  val_ssim_y:
+    _target_: utils.metrics.ssim.StructuralSimilarityIndexMeasure
+    data_range: 1.0
+    channel: "y"
+  val_psnrb:
+    _target_: utils.metrics.psnrb.PeakSignalNoiseRatioBlock
+    data_range: 1.0
+  val_psnrb_y:
+    _target_: utils.metrics.psnrb.PeakSignalNoiseRatioBlock
+    data_range: 1.0
+    channel: "y"

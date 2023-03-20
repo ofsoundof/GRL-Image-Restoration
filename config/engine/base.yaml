@@ -1,0 +1,4 @@
+# @package _global_
+
+engine:
+  _target_: engines.BaseEngine

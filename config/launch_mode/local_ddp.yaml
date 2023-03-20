@@ -1,0 +1,8 @@
+# @package _global_
+
+io:
+  base_output_path: "~/projects/data/LightningIR/experiments/Local"
+  version: null
+
+trainer:
+  strategy: ddp

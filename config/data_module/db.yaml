@@ -1,0 +1,25 @@
+# @package _global_
+
+data_module:
+  _target_: 'data.IRDataModule'
+  name: "db"
+  num_channels: 3
+  kernel_type: gaussian
+  noise_sigma: 2
+  train:
+    dataset: div2k_extended
+    batch_size: ${batch_size}
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    kernel_type: ${data_module.kernel_type}
+    noise_sigma: ${data_module.noise_sigma}
+    patch_size: ${patch_size}
+    num_patches: 1
+  val:
+    dataset: mcmaster
+    batch_size: 1
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    kernel_type: ${data_module.kernel_type}
+    noise_sigma: ${data_module.noise_sigma}
+  test: null

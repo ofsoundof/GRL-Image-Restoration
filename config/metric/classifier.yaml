@@ -1,0 +1,8 @@
+# @package _global_
+
+metric:
+  accuracy:
+    _target_: torchmetrics.Accuracy
+  accuracy@5:
+    _target_: torchmetrics.Accuracy
+    top_k: 5

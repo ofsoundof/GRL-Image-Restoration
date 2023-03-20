@@ -1,0 +1,7 @@
+# @package _global_
+loss:
+  cross_entropy:
+    weight: 1.0
+    loss_func:
+      _target_: torch.nn.CrossEntropyLoss
+      label_smoothing: 0

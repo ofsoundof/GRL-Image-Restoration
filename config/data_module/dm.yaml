@@ -1,0 +1,19 @@
+# @package _global_
+
+data_module:
+  _target_: 'data.IRDataModule'
+  name: "dm"
+  num_channels: 3
+  train:
+    dataset: div2k_extended
+    batch_size: ${batch_size}
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    patch_size: ${patch_size}
+    num_patches: 1
+  val:
+    dataset: mcmaster+kodak24+cbsd68+urban100
+    batch_size: 1
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+  test: null

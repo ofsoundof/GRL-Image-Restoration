@@ -1,0 +1,16 @@
+torch
+torchvision
+matplotlib
+scikit-image
+opencv-python
+natsort
+tqdm
+einops
+timm
+torchx
+hydra-core
+pytorch-lightning==1.6.0
+tensorboard
+h5py
+pandas
+fairscale

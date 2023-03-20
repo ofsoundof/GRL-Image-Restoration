@@ -1,0 +1,25 @@
+# @package _global_
+
+data_module:
+  _target_: 'data.IRDataModule'
+  name: "bsr"
+  scale: 2
+  num_channels: 3
+  train:
+    dataset: div2k_extended
+    batch_size: ${batch_size}
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    scale: ${data_module.scale}
+    lr_patch_size: ${patch_size}
+    num_patches: 1
+    use_usm_pixel: True
+    use_usm_percep: True
+    use_usm_gan: False
+  val:
+    dataset: set5
+    batch_size: 1
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    scale: ${data_module.scale}
+  test: null

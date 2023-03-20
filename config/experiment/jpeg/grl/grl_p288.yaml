@@ -1,0 +1,62 @@
+# @package _global_
+tag: GRL/GRL_${data_module.name}/${model.name}/ft_${data_module.name}_${model.name}_${data_module.train.dataset}_w${model.window_size}d${model.anchor_window_down_factor}e${model.embed_dim}m${model.mlp_ratio}_p${patch_size}c${data_module.num_channels}q${data_module.quality_factor}
+
+gpus: 8
+num_nodes: 1
+patch_size: 288
+batch_size: 1
+
+stripe_size1: 72
+stripe_size2: 144
+
+training: True
+mixup: False
+tile: 576
+tile_overlap: 72
+
+defaults:
+  - override /data_module: jpeg
+  - override /model: grl/grl_small
+  - override /loss: charbonnier
+  - override /lr_scheduler: multi_steplr
+  - override /optimizer: adamw
+  - override /metric: restorer
+
+data_module:
+  quality_factor: 10
+  num_channels: 3
+  train:
+    dataset: div2k_extended
+  val:
+    dataset: live1
+    # gray: classic5+live1+bsds500+urban100+icb_gray
+    # color: live1+bsds500+urban100+icb_rgb
+
+model:
+  upscale: 1
+  in_channels: ${data_module.num_channels}
+  upsampler: ""
+  window_size: 36
+  stripe_size:
+    - ${stripe_size1}
+    - ${stripe_size2}
+  stripe_groups:
+    - null
+    - null
+  anchor_window_down_factor: 4
+
+trainer:
+  max_steps: 175000
+  val_check_interval: 5000
+
+lr_scheduler:
+  milestones: [50000, 100000, 125000, 150000]
+  gamma: 0.5
+
+optimizer:
+  lr: 0.0001
+
+fbl_resource_requirements:
+  memory_per_gpu: 30000
+  capabilities:
+    - null

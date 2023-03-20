@@ -1,0 +1,32 @@
+# @package _global_
+loss:
+  pixel_loss:
+    weight: 1.0
+    loss_func:
+      _target_: torch.nn.L1Loss
+  perceptual_loss:
+    weight: 1.0
+    loss_func:
+      _target_: losses.PerceptualLoss
+      layer_weights:
+        # before relu
+        'conv1_2': 0.1
+        'conv2_2': 0.1
+        'conv3_4': 1
+        'conv4_4': 1
+        'conv5_4': 1
+      vgg_type: vgg19
+      use_input_norm: true
+      perceptual_weight: !!float 1.0
+      style_weight: 0
+      range_norm: false
+      criterion: l1
+      requires_grad: false
+  gan_loss:
+    weight: 1.0
+    loss_func:
+      _target_: losses.GANLoss
+      gan_type: vanilla
+      real_label_val: 1.0
+      fake_label_val: 0.0
+      loss_weight: !!float 1e-1

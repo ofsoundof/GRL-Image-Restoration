@@ -1,0 +1,37 @@
+# @package _global_
+
+data_module:
+  _target_: 'data.IRDataModule'
+  name: "dn"
+  noise_sigma: 15
+  noise_sigma_range: []
+  noise_level_map: False
+  num_channels: 3
+  train:
+    dataset: div2k_extended
+    batch_size: ${batch_size}
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    noise_sigma: ${data_module.noise_sigma}
+    noise_sigma_range: ${data_module.noise_sigma_range}
+    noise_level_map: ${data_module.noise_level_map}
+    patch_size: ${patch_size}
+    num_patches: 1
+  val:
+    dataset: mcmaster+cbsd68+kodak24+urban100
+    # ataset: set12+bsd68+urban100
+    batch_size: 1
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    noise_sigma: ${data_module.noise_sigma}
+    noise_level_map: ${data_module.noise_level_map}
+    modulo: 8
+  test: null
+
+# Image denoising training dataset
+    # div2k: DIV2K 800 training images
+    # df2k: DIV2K 800 + Flickr2K 2650
+    # df2k3350: DIV2K 800 + DIV2K validation 100 + Flickr2K 2650
+    # div2k_extended: DIV2K 800 + Flickr2K 2650 + BSD400 + WED
+    # lsdir: LSDIR dataset
+    # lsdir_extended: LSDIR + Flickr2K 2650 + BSD400 + WED

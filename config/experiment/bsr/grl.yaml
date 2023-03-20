@@ -1,0 +1,107 @@
+# @package _global_
+tag: GRL/GRL_bsr/${model.name}_${data_module.train.dataset}_w${model.model_g.window_size}e${model.model_g.embed_dim}m${model.model_g.mlp_ratio}_b8p${patch_size}c${data_module.num_channels}x${data_module.scale}_GAN
+
+gpus: 8
+num_nodes: 1
+patch_size: 128
+batch_size: 1
+
+stripe_size1: 32
+stripe_size2: 64
+
+training: True
+mixup: False
+
+find_unused_parameters: True
+bsr_psnr_checkpoint: "manifold://on_device_sr/tree/yaweili/experiments/GRL/GRL_bsr/grl_base_all_w16e180m2_b32p128c3x4_b8continue/version_0/checkpoints/last.ckpt"
+bsr_discriminator_checkpoint: "manifold://on_device_sr/tree/yaweili/experiments/BSRGAN/lsdir_x4_extended_p72_GAN/version_0/checkpoints/last.ckpt"
+
+defaults:
+  - override /data_module: bsr
+  - override /engine: base_gan
+  - override /model: grl_base_bsr
+  - override /loss: gan_training_loss
+  - override /lr_scheduler: multi_steplr
+  - override /optimizer: adam
+  - override /metric: restorer_niqe
+
+model_checkpoint:
+  save_last: True
+  save_top_k: 1
+  monitor: "val_niqe"
+  mode: "min"
+
+# model_checkpoint:
+#   save_last: True
+#   save_top_k: 1
+#   monitor: null
+#   mode: "min"
+
+data_module:
+  scale: 4
+  train:
+    dataset: all
+    use_usm_pixel: True
+    use_usm_percep: True
+    use_usm_gan: False
+  val:
+    dataset: realsr
+    with_gt: False
+
+model:
+  model_g:
+    upscale: ${data_module.scale}
+    in_channels: ${data_module.num_channels}
+    upsampler: nearest+conv
+    window_size: 16
+    stripe_size:
+      - ${stripe_size1}
+      - ${stripe_size2}
+    stripe_groups:
+      - null
+      - null
+    anchor_window_down_factor: 4
+    fairscale_checkpoint: False
+
+    # upscale: ${data_module.scale}
+    # in_channels: ${data_module.num_channels}
+    # window_size: 16
+    # stripe_size:
+    #   - ${stripe_size1}
+    #   - ${stripe_size2}
+    # stripe_groups:
+    #   - null
+    #   - null
+    # anchor_window_down_factor: 4
+    # fairscale_checkpoint: True
+
+# loss:
+#   perceptual_loss:
+#     loss_func:
+#       requires_grad: True
+
+trainer:
+  max_steps: 600000
+  val_check_interval: 5000
+  strategy: ddp
+
+lr_scheduler:
+  milestones: [600000]
+  # milestones: [200000, 300000]
+  gamma: 0.5
+
+optimizer:
+  lr: 0.00001
+
+fbl_resource_requirements:
+  memory_per_gpu: 30000
+  capabilities:
+    - null
+
+# fairscale_checkpoint=True, dp, find_unused_parameters=True
+#   More mem on GPU0
+# fairscale_checkpoint=False, ddp, find_unused_parameters=True
+# fairscale_checkpoint=True, ddp, find_unused_parameters=False, requires_grad=True
+#   This error indicates that your module has parameters that were not used in producing loss. You can enable unused parameter detection by passing the keyword argument `find_unused_parameters=True` to `torch.nn.parallel.DistributedDataParallel`, and by making sure all `forward` function outputs participate in calculating loss.
+
+# fairscale_checkpoint=True, ddp, find_unused_parameters=False. This is impossible

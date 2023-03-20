@@ -1,0 +1,28 @@
+# @package _global_
+
+data_module:
+  _target_: 'data.IRDataModule'
+  name: "jpeg"
+  quality_factor: 10
+  quality_factor_range: []
+  noise_level_map: False
+  num_channels: 3
+  train:
+    dataset: div2k_extended
+    batch_size: ${batch_size}
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    quality_factor: ${data_module.quality_factor}
+    quality_factor_range: ${data_module.quality_factor_range}
+    noise_level_map: ${data_module.noise_level_map}
+    patch_size: ${patch_size}
+    num_patches: 1
+    patchwise: False
+  val:
+    dataset: live1
+    batch_size: 1
+    num_workers: ${num_workers}
+    num_channels: ${data_module.num_channels}
+    quality_factor: ${data_module.quality_factor}
+    noise_level_map: ${data_module.noise_level_map}
+  test: null

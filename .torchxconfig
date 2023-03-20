@@ -1,0 +1,6 @@
+[cli:run]
+component=dist.ddp
+scheduler=local_cwd
+
+[component:dist.ddp]
+m = tools.trainer

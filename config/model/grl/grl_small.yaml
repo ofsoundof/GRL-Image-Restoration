@@ -1,0 +1,34 @@
+# @package _global_
+model:
+  _target_: models.networks.grl.GRL
+  name: "grl_small"
+  upscale: 4
+  in_channels: 3
+  embed_dim: 128
+  img_range: 1.
+  img_size: ${patch_size}
+  upsampler: pixelshuffle
+  depths: [4, 4, 4, 4]
+  num_heads_window: [2, 2, 2, 2]
+  num_heads_stripe: [2, 2, 2, 2]
+  window_size: 8
+  stripe_size: [8, null]
+  stripe_groups: [null, 4]
+  stripe_shift: True
+  mlp_ratio: 2
+  qkv_proj_type: "linear"
+  anchor_proj_type: "avgpool"
+  anchor_one_stage: True
+  anchor_window_down_factor: 4
+  out_proj_type: "linear"
+  conv_type: "1conv"
+  init_method: "n"
+  fairscale_checkpoint: False
+  offload_to_cpu: False
+  double_window: False
+  stripe_square: False
+  separable_conv_act: True
+  local_connection: False
+  use_buffer: True
+  use_efficient_buffer: True
+  euclidean_dist: False

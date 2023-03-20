@@ -1,0 +1,61 @@
+# @package _global_
+tag: GRL/GRL_db_motion/${model.name}/ft_db_motion_${model.name}_w${model.window_size}e${model.embed_dim}m${model.mlp_ratio}_p${patch_size}_${data_module.train.dataset}
+
+gpus: 8
+num_nodes: 1
+num_workers: 2
+patch_size: 480
+batch_size: 1
+
+tile: 480
+tile_overlap: 48
+
+stripe_size1: 48
+stripe_size2: 96
+
+training: True
+mixup: False
+
+defaults:
+  - override /data_module: paired
+  - override /model: grl_base
+  - override /loss: charbonnier
+  - override /lr_scheduler: multi_steplr
+  - override /optimizer: adamw
+  - override /metric: restorer
+
+data_module:
+  train:
+    dataset: gopro
+  val:
+    dataset: gopro+hide+realblur-r+realblur-j
+# 1111, 2025, 980, 980
+model:
+  upscale: 1
+  in_channels: ${data_module.num_channels}
+  upsampler: ""
+  window_size: 12
+  stripe_size:
+    - ${stripe_size1}
+    - ${stripe_size2}
+  stripe_groups:
+    - null
+    - null
+  anchor_window_down_factor: 4
+
+trainer:
+  max_steps: 40000
+  val_check_interval: 5000
+
+lr_scheduler:
+  milestones: [40000, 80000]
+  # milestones: [20000, 40000, 60000, 70000]
+  gamma: 0.5
+
+optimizer:
+  lr: 0.00001
+
+fbl_resource_requirements:
+  memory_per_gpu: 30000
+  capabilities:
+    - null

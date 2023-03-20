@@ -1,0 +1,7 @@
+# @package _global_
+lr_scheduler:
+  _target_: timm.scheduler.cosine_lr.CosineLRScheduler
+  t_initial: ${trainer.max_steps}
+  lr_min: 1e-5
+  warmup_lr_init: 1e-5
+  warmup_t: 50000

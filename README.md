@@ -5,14 +5,22 @@ This repository is an official implementation of the paper Efficient and Explici
 By Yawei Li, Yuchen Fan, Xiaoyu Xiang, Denis Demandolx, Rakesh Ranjan, Radu Timofte, and Luc Van Gool
 
 
-## Coming soon
-- [ ] GRL-B/S/T model for image denosing.
-- [ ] GRL-B/S/T model for single-image super-resolution.
-- [ ] GRL-B model for single-image motion deblurring.
-- [ ] GRL-B model for image defocus deblurring.
-- [ ] GRL-B model for real-world image super-resolution.
-- [ ] GRL-B model for image demosaicking.
-- [ ] GRL-S model for JPEG compression artifacts removal.
+## News
+- `Mar 20, 2023`: 🚀 GRL is released！
+  - [ ] GRL-B/S/T model for image denosing.
+  - [ ] GRL-B/S/T model for image denosing.
+  - [ ] GRL-B/S/T model for single-image super-resolution.
+  - [ ] GRL-B model for single-image motion deblurring.
+  - [ ] GRL-B model for image defocus deblurring.
+  - [ ] GRL-B model for real-world image super-resolution.
+  - [ ] GRL-B model for image demosaicking.
+  - [ ] GRL-S model for JPEG compression artifacts removal.
+- `Feb 28, 2023`: 🚀 GRL is accepted to CVPR 2023!
+
+## Coming soom
+- [ ] LightningIR: A general framework for image restoration.
+- [ ] LSDIR: A large-scale dataset for image restoration.
+
 
 ## Introduction
 
@@ -32,6 +40,19 @@ synthetic settings. The proposed method sets the new state-of-the-art for severa
 <div align=center>
 <img src='./figs/grl_network.png' width=2530>
 </div>
+
+## How to Use the Code?
+
+1. `conda create -n LightningIR python=3.8`
+2. `conda activate LightningIR`
+3. `pip install -r requirements.txt`
+4. prepare the dataset
+5. download the pretrained models
+6. ```bash
+    torchx run -- -j 1x2 -- \
+        -m training=False gpus=2 experiment=dm/grl model=grl/grl_small \
+        load_state_dict=True pretrained_checkpoint="${MODEL_ZOO}/GRL/dm_grl_small.ckpt"
+    ```
 
 ## Main Results
 

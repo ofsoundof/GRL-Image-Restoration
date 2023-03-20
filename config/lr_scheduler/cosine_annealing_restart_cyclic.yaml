@@ -1,0 +1,6 @@
+# @package _global_
+lr_scheduler:
+  _target_: optim.CosineAnnealingRestartCyclicLR
+  periods: [200000, 100000]
+  restart_weights: [1, 0.5]
+  eta_mins: [1e-5, 1e-5]

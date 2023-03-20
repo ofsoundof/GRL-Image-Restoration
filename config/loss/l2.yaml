@@ -1,0 +1,6 @@
+# @package _global_
+loss:
+  l2:
+    weight: 1.0
+    loss_func:
+      _target_: torch.nn.MSELoss
